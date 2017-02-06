@@ -1,4 +1,4 @@
-
+O
 public class Fighter {
 
 	private double[] nothing;
@@ -7,6 +7,7 @@ public class Fighter {
 	private double[] collectAmmo;
 	private double[] getHealing;
 
+	private Window window;
 
 	public Fighter() {
 

@@ -120,7 +120,7 @@ public class Network {
 
 	}
 
-	public double[] run(Pattern p) {
+	public void run(Pattern p) {
 
 		int[] net_input = p.getX();
 
@@ -141,11 +141,8 @@ public class Network {
 				n.activationFunction();
 			}
 		}
-		double[] outputVector = new double[outputLayerSize];
-		for (int i = 0; i < outputLayerSize; i++) {
-			outputVector[i] = getOutputLayer().get(i).getActivation();
-		}
-		return outputVector;
+		// printResult();
+
 	}
 
 	public void backpropagation_learning(ArrayList<Pattern> examples, Window window) {
@@ -228,7 +225,7 @@ public class Network {
 
 				}
 
-				// printResult();
+				//printResult();
 			}
 			Platform.runLater(() -> window.setErrorLabel(networkError));
 

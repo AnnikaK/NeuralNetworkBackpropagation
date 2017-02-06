@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 
 public class Fighter {
 
@@ -7,8 +8,10 @@ public class Fighter {
 	private double[] collectAmmo;
 	private double[] getHealing;
 
+	private Window window;
 
-	public Fighter() {
+	public Fighter(Window window) {
+		this.window = window;
 
 		nothing = new double[] { 0, 0, 0, 0 };
 
@@ -18,20 +21,20 @@ public class Fighter {
 		getHealing = new double[] { 0, 0, 0, 1 };
 	}
 
-	public String showReaction(double[] outputVector) {
+	public void showReaction(double[] outputVector) {
 
 		if (equal(outputVector, nothing)) {
-			return "Nichtstun";
+			Platform.runLater(() -> window.react("Nichtstun"));
 		} else if (equal(outputVector, fight)) {
-			return "Angriff";
+			Platform.runLater(() -> window.react("Angriff"));
 		} else if (equal(outputVector, hide)) {
-			return "Verstecken";
+			Platform.runLater(() -> window.react("Verstecken"));
 		} else if (equal(outputVector, collectAmmo)) {
-			return "Munition sammeln";
+			Platform.runLater(() -> window.react("Munition sammeln"));
 		} else if (equal(outputVector, getHealing)) {
-			return "Heilung von Verbündeten erhalten";
+			Platform.runLater(() -> window.react("Heilung von Verbündetem erhalten"));
 		} else {
-			return "Untentschlossen";
+			Platform.runLater(() -> window.react("Unentschlossen"));
 		}
 
 	}

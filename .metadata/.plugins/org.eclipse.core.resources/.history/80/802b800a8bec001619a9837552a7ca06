@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 public class Window extends Application {
 
 	private Network net;
-	private Fighter fighter;
 	private ArrayList<Pattern> examples;
 	private Label statusContent;
 	private Label networkError;
@@ -35,8 +34,6 @@ public class Window extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
-		fighter = new Fighter();
 
 		setupNetwork();
 
@@ -182,7 +179,7 @@ public class Window extends Application {
 
 	private void createRunningThread() {
 		run.setDisable(true);
-		new RunNetworkThread(net, this, fighter);
+		new RunNetworkThread(net, this);
 
 	}
 
@@ -207,9 +204,10 @@ public class Window extends Application {
 	public void enableTrainingButton() {
 		train.setDisable(false);
 	}
-
-	public void enableUserInterface() {
-		for (ComboBox<Integer> box : comboBoxes) {
+	
+	public void enableUserInterface(){
+		for(ComboBox<Integer> box : comboBoxes)
+		{
 			box.setDisable(false);
 		}
 		run.setDisable(false);
@@ -218,13 +216,10 @@ public class Window extends Application {
 	public void setStatusTrained() {
 		statusContent.setText("trainiert");
 	}
-
-	public void setErrorLabel(double val) {
+	
+	public void setErrorLabel(double val) 
+	{
 		networkError.setText(Double.toString(val));
-	}
-
-	public void react(String s) {
-		react.setText(s);
 	}
 
 }

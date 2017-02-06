@@ -1,0 +1,16 @@
+import java.util.Arrays;
+
+import javafx.application.Platform;
+
+public class Fighter {
+
+	public Fighter() {
+
+	}
+	
+	public void showReaction(int[] outputVector)
+	{
+		
+	}
+
+}

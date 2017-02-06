@@ -1,0 +1,41 @@
+import javafx.application.Platform;
+
+public class Fighter {
+
+	private int[] nothing;
+	private int[] cannotDecide;
+	private int[] fight;
+	private int[] hide;
+	private int[] collectAmmo;
+	private int[] getHealing;
+	
+	private Window window;
+	
+	
+
+	public Fighter(Window window) {
+		this.window = window;
+	}
+
+	public void showReaction(int[] outputVector) {
+		
+		if(equal(outputVector, nothing))
+		{
+			Platform.runLater(() -> window.react(Reactions.NICHTSTUN));
+		}
+
+	}
+
+	private boolean equal(int[] a, int[] b) {
+		if (a.length != b.length) {
+			return false;
+		}
+		for (int i = 0; i < a.length; i++) {
+			if (Math.abs(a[i] - b[i]) > 0.1) {   //toleranzbereich weil exakt 1 / 0 nie erreicht
+				return false;
+			}
+		}
+		return true;
+	}
+
+}
