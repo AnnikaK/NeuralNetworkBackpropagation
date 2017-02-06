@@ -219,7 +219,7 @@ public class Window extends Application {
 	
 	public void setErrorLabel(double val) 
 	{
-		networkError.setText(Double.toString(val));
+		errorLabel.setText(Double.toString(val));
 	}
 
 }

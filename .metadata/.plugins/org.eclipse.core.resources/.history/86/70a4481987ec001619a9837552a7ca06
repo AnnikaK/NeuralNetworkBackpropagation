@@ -16,6 +16,7 @@ public class Window extends Application {
 	private Network net;
 	private ArrayList<Pattern> examples;
 	private Label statusContent;
+	private Label errorLabel;
 	private Label networkError;
 
 	private Button train;
@@ -219,7 +220,7 @@ public class Window extends Application {
 	
 	public void setErrorLabel(double val) 
 	{
-		networkError.setText(Double.toString(val));
+		errorLabel.setText(val);
 	}
 
 }

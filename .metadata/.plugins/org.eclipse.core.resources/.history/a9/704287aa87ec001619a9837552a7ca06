@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-import javafx.application.Platform;
-
 public class Network {
 	private ArrayList<ArrayList<Neuron>> layers;
 	private int outputLayerSize;
@@ -145,7 +143,7 @@ public class Network {
 
 	}
 
-	public void backpropagation_learning(ArrayList<Pattern> examples, Window window) {
+	public void backpropagation_learning(ArrayList<Pattern> examples) {
 
 		while (!stop_criteria()) {
 			nrOfIterations++;
@@ -225,8 +223,9 @@ public class Network {
 
 				}
 
+				printResult();
 			}
-			Platform.runLater(() -> window.setErrorLabel(networkError));
+			printError();
 
 		}
 
