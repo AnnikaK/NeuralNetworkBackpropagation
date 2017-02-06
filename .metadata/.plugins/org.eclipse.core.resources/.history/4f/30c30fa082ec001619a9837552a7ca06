@@ -1,0 +1,71 @@
+import java.util.ArrayList;
+
+import javafx.scene.control.ComboBox;
+
+public class RunNetworkThread extends Thread {
+
+	private Network net;
+	private Window window;
+
+	public RunNetworkThread(Network net, Window window) {
+		this.net = net;
+		this.window = window;
+		this.setDaemon(true);
+		this.start();
+	}
+
+	@Override
+	public void run() {
+
+		ArrayList<ComboBox<Integer>> comboBoxes = window.getComboboxes();
+		ArrayList<String> binaryStrings = new ArrayList<>();
+		for (int i = 0; i < comboBoxes.size(); i++) {
+			binaryStrings.add(Integer.toBinaryString(comboBoxes.get(i).getValue()));
+		}
+
+		int[] inputVector = new int[net.getInputLayerSize()];
+		int offset = 0;
+		int elements = net.getInputLayerSize() / binaryStrings.size();
+		for (int i = 0; i < binaryStrings.size(); i++) {
+			adjustString(inputVector, offset, binaryStrings.get(i));
+			offset += elements;
+		}
+
+		Pattern inputPattern = new Pattern(inputVector, null); // no target
+																// vector
+		net.run(inputPattern);
+	}
+	/*
+	 * private void computeInput() {
+	 * 
+	 * String v1 = Integer.toBinaryString(b1.getValue()); String v2 =
+	 * Integer.toBinaryString(b2.getValue()); String v3 =
+	 * Integer.toBinaryString(b3.getValue()); String v4 =
+	 * Integer.toBinaryString(b4.getValue());
+	 * 
+	 * int[] x = new int[16]; int offset = 0; adjustString(x, offset, v1);
+	 * offset += 4; adjustString(x, offset, v2); offset += 4; adjustString(x,
+	 * offset, v3); offset += 4; adjustString(x, offset, v4);
+	 * 
+	 * Pattern input = new Pattern(x, null); net.run(input);
+	 * 
+	 * }
+	 */
+
+	private void adjustString(int[] x, int offset, String str) {
+
+		int index = offset + (4 - str.length());
+		for (int i = 0; i < str.length(); i++) {
+			if (str.charAt(i) == '1') {
+				x[index] = 1;
+				index++;
+			} else {
+				x[index] = 0;
+				index++;
+			}
+
+		}
+
+	}
+
+}

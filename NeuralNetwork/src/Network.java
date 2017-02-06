@@ -122,7 +122,7 @@ public class Network {
 
 		int[] net_input = p.getX();
 
-		//printInput(net_input);
+		// printInput(net_input);
 
 		// init input layer
 		ArrayList<Neuron> inputLayer = getInputLayer();
@@ -139,7 +139,7 @@ public class Network {
 				n.activationFunction();
 			}
 		}
-		//printResult();
+		// printResult();
 
 	}
 
@@ -276,6 +276,14 @@ public class Network {
 
 	public void setMinError(double minErr) {
 		minError = minErr;
+	}
+
+	public int getInputLayerSize() {
+		return inputLayerSize;
+	}
+
+	public int getOutputLayerSize() {
+		return outputLayerSize;
 	}
 
 	private void printResult() {

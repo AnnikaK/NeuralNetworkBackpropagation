@@ -26,6 +26,7 @@ public class Window extends Application {
 	private ComboBox<Integer> b3;
 	private ComboBox<Integer> b4;
 	private Label react;
+	private ArrayList<ComboBox<Integer>> comboBoxes;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -88,7 +89,7 @@ public class Window extends Application {
 		run = new Button("Netzwerkdurchlauf starten!");
 		run.setFont(new Font(16));
 		// run.setDisable(true);
-		run.setOnAction((e) -> computeInput());
+		run.setOnAction((e) -> new RunNetworkThread(net, this));
 		run.setLayoutX(20);
 		run.setLayoutY(320);
 		root.getChildren().add(run);
@@ -106,6 +107,7 @@ public class Window extends Application {
 	}
 
 	private void createComboBoxes(Pane root) {
+		comboBoxes = new ArrayList<>();
 		ArrayList<Integer> numbers = new ArrayList<>();
 		for (int i = 0; i <= 10; i++) {
 			numbers.add(i);
@@ -114,6 +116,7 @@ public class Window extends Application {
 		Label l1 = new Label("Gesundheit: ");
 		l1.setFont(new Font(16));
 		b1 = new ComboBox<>();
+		comboBoxes.add(b1);
 		b1.setPromptText("0");
 		b1.setValue(0);
 		b1.getItems().addAll(numbers);
@@ -126,6 +129,7 @@ public class Window extends Application {
 		Label l2 = new Label("Munition: ");
 		l2.setFont(new Font(16));
 		b2 = new ComboBox<>();
+		comboBoxes.add(b2);
 		b2.setPromptText("0");
 		b2.setValue(0);
 		b2.getItems().addAll(numbers);
@@ -138,6 +142,7 @@ public class Window extends Application {
 		Label l3 = new Label("Anzahl Gegner: ");
 		l3.setFont(new Font(16));
 		b3 = new ComboBox<>();
+		comboBoxes.add(b3);
 		b3.setPromptText("0");
 		b3.setValue(0);
 		b3.getItems().addAll(numbers);
@@ -150,6 +155,7 @@ public class Window extends Application {
 		Label l4 = new Label("Anzahl Verbündete: ");
 		l4.setFont(new Font(16));
 		b4 = new ComboBox<>();
+		comboBoxes.add(b4);
 		b4.setPromptText("0");
 		b4.setValue(0);
 		b4.getItems().addAll(numbers);
@@ -164,7 +170,7 @@ public class Window extends Application {
 
 	}
 
-	// -------------------------------------------Network
+
 
 	private void setupNetwork() {
 		examples = createPatterns();
@@ -172,44 +178,13 @@ public class Window extends Application {
 		net = new Network(structure, 0.3, 0.0001, 7000);
 
 	}
-
-	private void computeInput() {
-
-		String v1 = Integer.toBinaryString(b1.getValue());
-		String v2 = Integer.toBinaryString(b2.getValue());
-		String v3 = Integer.toBinaryString(b3.getValue());
-		String v4 = Integer.toBinaryString(b4.getValue());
-
-		int[] x = new int[16];
-		int offset = 0;
-		adjustString(x, offset, v1);
-		offset += 4;
-		adjustString(x, offset, v2);
-		offset += 4;
-		adjustString(x, offset, v3);
-		offset += 4;
-		adjustString(x, offset, v4);
-
-		Pattern input = new Pattern(x, null);
-		net.run(input);
-
+	
+	public ArrayList<ComboBox<Integer>> getComboboxes()
+	{
+		return comboBoxes;
 	}
 
-	private void adjustString(int[] x, int offset, String v1) {
 
-		int index = offset + (4 - v1.length());
-		for (int i = 0; i < v1.length(); i++) {
-			if (v1.charAt(i) == '1') {
-				x[index] = 1;
-				index++;
-			} else {
-				x[index] = 0;
-				index++;
-			}
-
-		}
-
-	}
 
 	private ArrayList<Pattern> createPatterns() {
 		// TODO Auto-generated method stub
