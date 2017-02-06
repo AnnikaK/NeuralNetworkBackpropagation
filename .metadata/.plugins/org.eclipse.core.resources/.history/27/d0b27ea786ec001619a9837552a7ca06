@@ -214,8 +214,4 @@ public class Window extends Application {
 		run.setDisable(false);
 	}
 
-	public void setStatusTrained() {
-		statusContent.setText("trainiert");
-	}
-
 }

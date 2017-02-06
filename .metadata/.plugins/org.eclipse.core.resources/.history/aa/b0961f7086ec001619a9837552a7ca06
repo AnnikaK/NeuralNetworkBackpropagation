@@ -19,8 +19,8 @@ public class LearningThread extends Thread {
 	@Override
 	public void run() {
 		net.backpropagation_learning(examples); // hier window uebergeben
-		
-		Platform.runLater(() -> window.setStatusTrained());
+
+		//Platform.runLater(() -> window.enableTrainingButton());
 		Platform.runLater(() -> window.enableUserInterface());
 		
 	}

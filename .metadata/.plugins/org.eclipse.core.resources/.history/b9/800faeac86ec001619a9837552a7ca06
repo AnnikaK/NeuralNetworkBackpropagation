@@ -215,7 +215,7 @@ public class Window extends Application {
 	}
 
 	public void setStatusTrained() {
-		statusContent.setText("trainiert");
+		statusContent.setText("trainiert und einsatzbereit");
 	}
 
 }

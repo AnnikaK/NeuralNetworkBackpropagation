@@ -89,7 +89,7 @@ public class Window extends Application {
 
 		run = new Button("Netzwerkdurchlauf starten!");
 		run.setFont(new Font(16));
-		run.setDisable(true);
+		// run.setDisable(true);
 		run.setOnAction((e) -> createRunningThread());
 		run.setLayoutX(20);
 		run.setLayoutY(320);
@@ -125,7 +125,7 @@ public class Window extends Application {
 		l1.setLayoutY(140);
 		b1.setLayoutX(180);
 		b1.setLayoutY(140);
-		b1.setDisable(true);
+		// b1.setDisable(true);
 
 		Label l2 = new Label("Munition: ");
 		l2.setFont(new Font(16));
@@ -138,7 +138,7 @@ public class Window extends Application {
 		l2.setLayoutY(180);
 		b2.setLayoutX(180);
 		b2.setLayoutY(180);
-		b2.setDisable(true);
+		// b2.setDisable(true);
 
 		Label l3 = new Label("Anzahl Gegner: ");
 		l3.setFont(new Font(16));
@@ -151,7 +151,7 @@ public class Window extends Application {
 		l3.setLayoutY(220);
 		b3.setLayoutX(180);
 		b3.setLayoutY(220);
-		b3.setDisable(true);
+		// b3.setDisable(true);
 
 		Label l4 = new Label("Anzahl Verbündete: ");
 		l4.setFont(new Font(16));
@@ -164,7 +164,7 @@ public class Window extends Application {
 		l4.setLayoutY(260);
 		b4.setLayoutX(180);
 		b4.setLayoutY(260);
-		b4.setDisable(true);
+		// b4.setDisable(true);
 
 		root.getChildren().addAll(l1, l2, l3, l4);
 		root.getChildren().addAll(b1, b2, b3, b4);
@@ -204,18 +204,6 @@ public class Window extends Application {
 
 	public void enableTrainingButton() {
 		train.setDisable(false);
-	}
-	
-	public void enableUserInterface(){
-		for(ComboBox<Integer> box : comboBoxes)
-		{
-			box.setDisable(false);
-		}
-		run.setDisable(false);
-	}
-
-	public void setStatusTrained() {
-		statusContent.setText("trainiert");
 	}
 
 }
