@@ -36,9 +36,9 @@ public class RunNetworkThread extends Thread {
 		Pattern inputPattern = new Pattern(inputVector, null); // no target
 																// vector
 		net.run(inputPattern);
-
-		Platform.runLater(() -> window.enableRunningButton());
-		// System.out.println(Arrays.toString(inputPattern.getX()));
+		
+		Platform.runLater(() -> window.getRunningButton().setDisable(false));
+		System.out.println(Arrays.toString(inputPattern.getX()));
 
 	}
 

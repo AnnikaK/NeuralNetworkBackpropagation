@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-import javafx.application.Platform;
-
 public class LearningThread extends Thread {
 
 	private Network net;
@@ -19,8 +17,6 @@ public class LearningThread extends Thread {
 	@Override
 	public void run() {
 		net.backpropagation_learning(examples); //hier window uebergeben
-		
-		Platform.runLater(() -> window.enableTrainingButton());
 	}
 
 }

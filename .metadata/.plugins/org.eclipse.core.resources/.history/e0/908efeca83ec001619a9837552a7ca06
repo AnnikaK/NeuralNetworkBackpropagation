@@ -1,0 +1,15 @@
+
+public class LearningThread extends Thread {
+	
+	private Network net;
+	private Window window;
+
+	public LearningThread(Network net, Window window) {
+		this.net = net;
+		this.window = window;
+		this.setDaemon(true);
+		this.start();
+	}
+
+
+}

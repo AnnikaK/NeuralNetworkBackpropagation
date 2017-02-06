@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import javafx.application.Platform;
 import javafx.scene.control.ComboBox;
 
 public class RunNetworkThread extends Thread {
@@ -13,7 +11,6 @@ public class RunNetworkThread extends Thread {
 		this.net = net;
 		this.window = window;
 		this.setDaemon(true);
-		this.start();
 	}
 
 	@Override
@@ -36,9 +33,6 @@ public class RunNetworkThread extends Thread {
 		Pattern inputPattern = new Pattern(inputVector, null); // no target
 																// vector
 		net.run(inputPattern);
-
-		Platform.runLater(() -> window.enableRunningButton());
-		// System.out.println(Arrays.toString(inputPattern.getX()));
 
 	}
 

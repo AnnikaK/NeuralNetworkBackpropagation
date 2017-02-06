@@ -82,7 +82,7 @@ public class Window extends Application {
 		train.setFont(new Font(16));
 		train.setLayoutX(20);
 		train.setLayoutY(60);
-		train.setOnAction((e) -> createLearningThread());
+		train.setOnAction((e) -> net.backpropagation_learning(examples));
 		root.getChildren().add(train);
 
 		createComboBoxes(root);
@@ -90,7 +90,7 @@ public class Window extends Application {
 		run = new Button("Netzwerkdurchlauf starten!");
 		run.setFont(new Font(16));
 		// run.setDisable(true);
-		run.setOnAction((e) -> createRunningThread());
+		run.setOnAction((e) -> new RunNetworkThread(net, this));
 		run.setLayoutX(20);
 		run.setLayoutY(320);
 		root.getChildren().add(run);
@@ -185,8 +185,7 @@ public class Window extends Application {
 	}
 
 	private void createLearningThread() {
-		train.setDisable(true);
-		new LearningThread(net, this, examples);
+
 	}
 
 	public ArrayList<ComboBox<Integer>> getComboboxes() {
@@ -198,12 +197,8 @@ public class Window extends Application {
 		return new ArrayList<>();
 	}
 
-	public void enableRunningButton() {
-		run.setDisable(false);
-	}
-
-	public void enableTrainingButton() {
-		train.setDisable(false);
+	public Node getRunningButton() {
+		return run;
 	}
 
 }

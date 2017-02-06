@@ -198,12 +198,8 @@ public class Window extends Application {
 		return new ArrayList<>();
 	}
 
-	public void enableRunningButton() {
-		run.setDisable(false);
-	}
-
-	public void enableTrainingButton() {
-		train.setDisable(false);
+	public Button getRunningButton() {
+		return run;
 	}
 
 }

@@ -82,7 +82,7 @@ public class Window extends Application {
 		train.setFont(new Font(16));
 		train.setLayoutX(20);
 		train.setLayoutY(60);
-		train.setOnAction((e) -> createLearningThread());
+		train.setOnAction((e) ->createLearningThread());
 		root.getChildren().add(train);
 
 		createComboBoxes(root);
@@ -198,12 +198,8 @@ public class Window extends Application {
 		return new ArrayList<>();
 	}
 
-	public void enableRunningButton() {
-		run.setDisable(false);
-	}
-
-	public void enableTrainingButton() {
-		train.setDisable(false);
+	public Button getRunningButton() {
+		return run;
 	}
 
 }
