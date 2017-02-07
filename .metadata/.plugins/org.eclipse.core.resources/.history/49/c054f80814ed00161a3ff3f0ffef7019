@@ -59,31 +59,23 @@ public class Fighter {
 	}
 
 	public ArrayList<Pattern> generateTrainingSamples() {
-		ArrayList<Pattern> trainingSet = new ArrayList<>();
+		ArrayList<Pattern> samples = new ArrayList<>();
 
 		for (int a = 0; a < 11; a++) {
 			for (int b = 0; b < 11; b++) {
 				for (int c = 0; c < 11; c++) {
 					for (int d = 0; d < 11; d++) {
 
-						ArrayList<String> strings = new ArrayList<>();
-						strings.add(Integer.toBinaryString(a));
-						strings.add(Integer.toBinaryString(b));
-						strings.add(Integer.toBinaryString(c));
-						strings.add(Integer.toBinaryString(d));
-
-						int[] x = createInputVector(strings);
+						int[] x = createInputVector(a, b, c, d);
 						int[] y = calculateExpectedOutput(a, b, c, d);
-
-						Pattern sample = new Pattern(x, y);
-						trainingSet.add(sample);
 
 					}
 
 				}
 			}
 		}
-		return trainingSet;
+
+		return samples;
 	}
 
 	public int[] createInputVector(ArrayList<String> binaryStrings) {

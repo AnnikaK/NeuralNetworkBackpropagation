@@ -15,6 +15,7 @@ public class Window extends Application {
 
 	private Network net;
 	private Fighter fighter;
+	private ArrayList<Pattern> examples;
 	private Label statusContent;
 	private Label networkError;
 
@@ -34,9 +35,10 @@ public class Window extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		fighter = new Fighter();
 
 		setupNetwork();
-		fighter = new Fighter(net);
 
 		Pane root = new Pane();
 		createWindow(root);
@@ -172,8 +174,9 @@ public class Window extends Application {
 	}
 
 	private void setupNetwork() {
-		int[] structure = { 16, 8, 4 };
-		net = new Network(structure, 0.1, 0.1, 1000,7000);
+		examples = createPatterns();
+		int[] structure = { 16, 6, 4 };
+		net = new Network(structure, 0.3, 0.0001, 7000);
 
 	}
 
@@ -185,11 +188,16 @@ public class Window extends Application {
 
 	private void createLearningThread() {
 		train.setDisable(true);
-		new LearningThread(net, this, fighter);
+		new LearningThread(net, this, examples);
 	}
 
 	public ArrayList<ComboBox<Integer>> getComboboxes() {
 		return comboBoxes;
+	}
+
+	private ArrayList<Pattern> createPatterns() {
+		// TODO Auto-generated method stub
+		return new ArrayList<>();
 	}
 
 	public void enableRunningButton() {
@@ -207,16 +215,16 @@ public class Window extends Application {
 		run.setDisable(false);
 	}
 
+	public void setStatusTrained() {
+		statusContent.setText("trainiert");
+	}
+
 	public void setErrorLabel(double val) {
 		networkError.setText(Double.toString(val));
 	}
 
 	public void react(String s) {
 		react.setText(s);
-	}
-
-	public void setStatus(String string) {
-		statusContent.setText(string);
 	}
 
 }

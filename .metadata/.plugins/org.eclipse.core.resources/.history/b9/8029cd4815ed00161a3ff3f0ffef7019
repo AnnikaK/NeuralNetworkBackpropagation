@@ -6,10 +6,10 @@ public class LearningThread extends Thread {
 
 	private Network net;
 	private Window window;
+	private ArrayList<Pattern> examples;
 	private Fighter fighter;
 
 	public LearningThread(Network net, Window window, Fighter fighter) {
-		this.net = net;
 		this.window = window;
 		this.fighter = fighter;
 		this.setDaemon(true);
@@ -19,14 +19,11 @@ public class LearningThread extends Thread {
 	@Override
 	public void run() {
 
-		Platform.runLater(() -> window.setStatus("Generiere Trainingsset"));
-		ArrayList<Pattern> trainingSet = fighter.generateTrainingSamples();
+		examples = fighter.generateTrainingSamples();
 
-		Platform.runLater(() -> window.setStatus("Trainiere"));
+		net.backpropagation_learning(examples, window);
 
-		net.backpropagation_learning(trainingSet, window);
-
-		Platform.runLater(() -> window.setStatus("trainiert"));
+		Platform.runLater(() -> window.setStatusTrained());
 		Platform.runLater(() -> window.enableUserInterface());
 
 	}

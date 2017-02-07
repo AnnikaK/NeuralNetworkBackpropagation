@@ -74,16 +74,18 @@ public class Fighter {
 
 						int[] x = createInputVector(strings);
 						int[] y = calculateExpectedOutput(a, b, c, d);
-
+						
 						Pattern sample = new Pattern(x, y);
 						trainingSet.add(sample);
-
+						
+						
 					}
 
 				}
 			}
 		}
-		return trainingSet;
+
+		return samples;
 	}
 
 	public int[] createInputVector(ArrayList<String> binaryStrings) {

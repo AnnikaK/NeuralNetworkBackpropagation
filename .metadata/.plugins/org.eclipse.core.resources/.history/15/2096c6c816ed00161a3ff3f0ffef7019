@@ -165,7 +165,7 @@ public class Network {
 					throw new IllegalArgumentException("Pattern does not match network input!");
 				}
 
-				//printInput(net_input);
+				printInput(net_input);
 
 				// init input layer
 				ArrayList<Neuron> inputLayer = getInputLayer();
@@ -254,9 +254,12 @@ public class Network {
 		if (nrOfIterations < minIterations) {
 			networkErrorTolerable();
 			return false;
-		} else if (nrOfIterations >= maxIterations) {
+		}
+		else if(nrOfIterations >= maxIterations)
+		{
 			return true;
-		} else {
+		}
+		else {
 			return networkErrorTolerable();
 		}
 

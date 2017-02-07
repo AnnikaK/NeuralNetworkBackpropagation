@@ -1,0 +1,28 @@
+import java.util.ArrayList;
+
+import javafx.application.Platform;
+
+public class LearningThread extends Thread {
+
+	private Network net;
+	private Window window;
+	private ArrayList<Pattern> examples;
+
+	public LearningThread(Network net, Window window, ArrayList<Pattern> examples) {
+		this.net = net;
+		this.window = window;
+		this.examples = examples;
+		this.setDaemon(true);
+		this.start();
+	}
+
+	@Override
+	public void run() {
+		net.backpropagation_learning(examples, window); 
+		
+		Platform.runLater(() -> window.setStatusTrained());
+		Platform.runLater(() -> window.enableUserInterface());
+		
+	}
+
+}

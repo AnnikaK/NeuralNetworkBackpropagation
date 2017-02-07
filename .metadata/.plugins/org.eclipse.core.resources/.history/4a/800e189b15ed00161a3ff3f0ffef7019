@@ -83,6 +83,7 @@ public class Fighter {
 				}
 			}
 		}
+		System.out.println(trainingSet.size());
 		return trainingSet;
 	}
 

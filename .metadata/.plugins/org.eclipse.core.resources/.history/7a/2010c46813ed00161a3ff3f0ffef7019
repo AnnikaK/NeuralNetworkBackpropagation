@@ -12,9 +12,8 @@ public class Fighter {
 	private final int verstecken = 1;
 	private final int sammeln = 2;
 	private final int heilung = 3;
-	private Network net;
 
-	public Fighter(Network net) {
+	public Fighter() {
 
 		nothing = new double[] { 0, 0, 0, 0 };
 
@@ -22,8 +21,6 @@ public class Fighter {
 		hide = new double[] { 0, 1, 0, 0 };
 		collectAmmo = new double[] { 0, 0, 1, 0 };
 		getHealing = new double[] { 0, 0, 0, 1 };
-
-		this.net = net;
 	}
 
 	public String showReaction(double[] outputVector) {
@@ -59,58 +56,20 @@ public class Fighter {
 	}
 
 	public ArrayList<Pattern> generateTrainingSamples() {
-		ArrayList<Pattern> trainingSet = new ArrayList<>();
+		ArrayList<Pattern> samples = new ArrayList<>();
 
 		for (int a = 0; a < 11; a++) {
 			for (int b = 0; b < 11; b++) {
 				for (int c = 0; c < 11; c++) {
 					for (int d = 0; d < 11; d++) {
 
-						ArrayList<String> strings = new ArrayList<>();
-						strings.add(Integer.toBinaryString(a));
-						strings.add(Integer.toBinaryString(b));
-						strings.add(Integer.toBinaryString(c));
-						strings.add(Integer.toBinaryString(d));
-
-						int[] x = createInputVector(strings);
-						int[] y = calculateExpectedOutput(a, b, c, d);
-
-						Pattern sample = new Pattern(x, y);
-						trainingSet.add(sample);
-
 					}
 
 				}
 			}
 		}
-		return trainingSet;
-	}
 
-	public int[] createInputVector(ArrayList<String> binaryStrings) {
-		int[] inputVector = new int[net.getInputLayerSize()];
-		int offset = 0;
-		int elements = net.getInputLayerSize() / binaryStrings.size();
-		for (int i = 0; i < binaryStrings.size(); i++) {
-			adjustString(inputVector, offset, binaryStrings.get(i));
-			offset += elements;
-		}
-		return inputVector;
-	}
-
-	private void adjustString(int[] x, int offset, String str) {
-
-		int index = offset + (4 - str.length());
-		for (int i = 0; i < str.length(); i++) {
-			if (str.charAt(i) == '1') {
-				x[index] = 1;
-				index++;
-			} else {
-				x[index] = 0;
-				index++;
-			}
-
-		}
-
+		return samples;
 	}
 
 	public int[] calculateExpectedOutput(int health, int ammo, int nrEnemies, int nrFriends) {

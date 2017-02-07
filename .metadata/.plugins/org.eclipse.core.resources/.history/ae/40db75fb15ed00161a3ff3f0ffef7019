@@ -6,10 +6,10 @@ public class LearningThread extends Thread {
 
 	private Network net;
 	private Window window;
+	private ArrayList<Pattern> examples;
 	private Fighter fighter;
 
 	public LearningThread(Network net, Window window, Fighter fighter) {
-		this.net = net;
 		this.window = window;
 		this.fighter = fighter;
 		this.setDaemon(true);

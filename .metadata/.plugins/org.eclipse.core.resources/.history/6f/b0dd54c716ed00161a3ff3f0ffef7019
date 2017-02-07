@@ -15,7 +15,6 @@ public class Network {
 
 	private long minIterations;
 	private long nrOfIterations;
-	private long maxIterations;
 
 	public Network(int[] structure) {
 
@@ -35,11 +34,10 @@ public class Network {
 
 	}
 
-	public Network(int[] structure, double learningRate, double minError, long minIterations, long maxIterations) {
+	public Network(int[] structure, double learningRate, double minError, long minIterations) {
 		this.minError = minError;
 		this.learningRate = learningRate;
 		this.minIterations = minIterations;
-		this.maxIterations = maxIterations;
 		networkError = Double.MAX_VALUE;
 
 		nrOfIterations = 0;
@@ -165,7 +163,7 @@ public class Network {
 					throw new IllegalArgumentException("Pattern does not match network input!");
 				}
 
-				//printInput(net_input);
+				printInput(net_input);
 
 				// init input layer
 				ArrayList<Neuron> inputLayer = getInputLayer();
@@ -254,8 +252,6 @@ public class Network {
 		if (nrOfIterations < minIterations) {
 			networkErrorTolerable();
 			return false;
-		} else if (nrOfIterations >= maxIterations) {
-			return true;
 		} else {
 			return networkErrorTolerable();
 		}

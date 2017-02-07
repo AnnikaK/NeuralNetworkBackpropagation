@@ -165,7 +165,7 @@ public class Network {
 					throw new IllegalArgumentException("Pattern does not match network input!");
 				}
 
-				//printInput(net_input);
+				printInput(net_input);
 
 				// init input layer
 				ArrayList<Neuron> inputLayer = getInputLayer();
