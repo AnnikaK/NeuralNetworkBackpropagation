@@ -7,10 +7,6 @@ public class Fighter {
 	private double[] collectAmmo;
 	private double[] getHealing;
 
-	private final int angriff = 0;
-	private final int verstecken = 1;
-	private final int sammeln = 2;
-	private final int heilung = 3;
 
 	public Fighter() {
 
@@ -52,30 +48,18 @@ public class Fighter {
 		}
 		return true;
 	}
-
-	public int[] calculateExpectedOutput(int health, int ammo, int nrEnemies, int nrFriends) {
-		int[] y = new int[] { 0, 0, 0, 0 };
-
-		if (health < 3 && nrFriends > 0) {
-			y[heilung] = 1; // heilung durch verbuendeten
-		} else if (health < 3 && nrFriends == 0) {
-			y[verstecken] = 1; // verstecken, keine heilung moeglich
-		} else if (ammo < 3 && !ueberzahl(nrEnemies, nrFriends)) {
-			y[sammeln] = 1; // sammle munition
-		} else if (ammo < 3 && ueberzahl(nrEnemies, nrFriends)) {
-			y[verstecken] = 1; // sammle keine munition, weil zu viele feinde in
-								// der naehe
-		} else if (!ueberzahl(nrEnemies, nrFriends)) {
-			y[angriff] = 1; // yeah, we can fight!
-		} else {
-			y[verstecken] = 1; // zu viele. Nope
-		}
-
+	
+	public int[] calculateExpectedOutput(int health, int ammo, int nrEnemies, int nrFriends)
+	{
+		int[] y = new int[] {0,0,0,0};
+		
+		
+		
+		
+		
+		
+		
 		return y;
-	}
-
-	private boolean ueberzahl(int nrEnemies, int nrFriends) {
-		return nrEnemies - nrFriends >= 3;
 	}
 
 }
