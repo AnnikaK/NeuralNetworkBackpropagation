@@ -86,41 +86,6 @@ public class Fighter {
 		return trainingSet;
 	}
 
-	public ArrayList<Pattern> generateIncompleteTrainingSamples() {
-		ArrayList<Pattern> trainingSet = new ArrayList<>();
-
-		int counter = 0;
-
-		for (int a = 0; a < 11; a++) {
-			for (int b = 0; b < 11; b++) {
-				for (int c = 0; c < 11; c++) {
-					for (int d = 0; d < 11; d++) {
-
-						ArrayList<String> strings = new ArrayList<>();
-						strings.add(Integer.toBinaryString(a));
-						strings.add(Integer.toBinaryString(b));
-						strings.add(Integer.toBinaryString(c));
-						strings.add(Integer.toBinaryString(d));
-
-						int[] x = createInputVector(strings);
-						int[] y = calculateExpectedOutput(a, b, c, d);
-
-						Pattern sample = new Pattern(x, y);
-
-						if (!(counter % 100 == 0)) {
-
-							trainingSet.add(sample);
-						}
-						counter++;
-
-					}
-
-				}
-			}
-		}
-		return trainingSet;
-	}
-
 	public boolean checkForCorrectness() {
 		ArrayList<Pattern> allExamples = generateTrainingSamples();
 		for (Pattern p : allExamples) {
