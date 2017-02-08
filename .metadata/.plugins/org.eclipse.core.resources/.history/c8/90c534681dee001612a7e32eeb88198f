@@ -1,0 +1,25 @@
+
+public class CheckThread extends Thread {
+
+	private Fighter fighter;
+
+	public CheckThread(Fighter fighter) {
+		this.fighter = fighter;
+		setDaemon(true);
+		start();
+	}
+
+	@Override
+	public void run() {
+
+		int falses = fighter.checkForCorrectness();
+		
+		int total = fighter.getNrOfSamples();
+		
+		double percent =  falses/total;
+		
+		
+		System.out.println(percent + "%");
+	}
+
+}

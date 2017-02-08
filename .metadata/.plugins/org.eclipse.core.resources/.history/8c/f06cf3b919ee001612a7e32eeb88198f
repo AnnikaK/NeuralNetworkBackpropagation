@@ -1,0 +1,19 @@
+
+public class CheckThread extends Thread {
+
+	private Fighter fighter;
+
+	public CheckThread(Fighter fighter) {
+		this.fighter = fighter;
+		setDaemon(true);
+		start();
+	}
+
+	@Override
+	public void run() {
+
+		boolean res = fighter.checkForCorrectness();
+		System.out.println(res);
+	}
+
+}

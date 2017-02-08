@@ -13,6 +13,7 @@ public class Fighter {
 	private final int sammeln = 2;
 	private final int heilung = 3;
 	private Network net;
+	private ArrayList<Pattern> totalSet;
 
 	public Fighter(Network net) {
 
@@ -83,6 +84,7 @@ public class Fighter {
 				}
 			}
 		}
+		totalSet = trainingSet;
 		return trainingSet;
 	}
 
@@ -121,15 +123,15 @@ public class Fighter {
 		return trainingSet;
 	}
 
-	public boolean checkForCorrectness() {
-		ArrayList<Pattern> allExamples = generateTrainingSamples();
-		for (Pattern p : allExamples) {
+	public int checkForCorrectness() {
+		int nrOfFalses = 0;
+		for (Pattern p : totalSet) {
 			double[] output = net.run(p);
 			if (!equal(output, p.getY())) {
-				return false;
+				nrOfFalses++;
 			}
 		}
-		return true;
+		return nrOfFalses;
 	}
 
 	private boolean equal(double[] a, int[] b) {
@@ -195,6 +197,10 @@ public class Fighter {
 
 	private boolean ueberzahl(int nrEnemies, int nrFriends) {
 		return nrEnemies - nrFriends >= 3;
+	}
+
+	public int getNrOfSamples() {
+		return totalSet.size();
 	}
 
 }
