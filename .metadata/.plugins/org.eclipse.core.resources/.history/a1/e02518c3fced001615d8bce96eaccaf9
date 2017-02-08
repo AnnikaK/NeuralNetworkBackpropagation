@@ -143,7 +143,18 @@ public class Window extends Application {
 
 	}
 
+	private void stopLearningThread() {
+		if (learningThread != null) {
+			learningThread.setAborted(true);
+			learningThread.interrupt();
+			learningThread = null;
+			statusContent.setText("abgebrochen");
+			train.setDisable(false);
+			setupNetwork(); //reset
+			
+		}
 
+	}
 
 	private void createComboBoxes(Pane center) {
 
@@ -208,8 +219,8 @@ public class Window extends Application {
 	}
 
 	private void setupNetwork() {
-		int[] structure = { 16, 6, 4 };
-		net = new Network(structure, 0.3, 0.0000000001, 100, 7000);
+		int[] structure = { 16, 8, 4 };
+		net = new Network(structure, 0.1, 0.1, 1000, 7000);
 
 	}
 
@@ -223,19 +234,6 @@ public class Window extends Application {
 		train.setDisable(true);
 		abort.setDisable(false);
 		learningThread = new LearningThread(net, this, fighter);
-	}
-	
-	private void stopLearningThread() {
-		if (learningThread != null) {
-			learningThread.setAborted(true);
-			learningThread.interrupt();
-			learningThread = null;
-			statusContent.setText("abgebrochen");
-			train.setDisable(false);
-			setupNetwork(); //reset
-			
-		}
-
 	}
 
 	public ArrayList<ComboBox<Integer>> getComboboxes() {

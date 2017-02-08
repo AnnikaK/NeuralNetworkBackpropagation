@@ -209,7 +209,7 @@ public class Window extends Application {
 
 	private void setupNetwork() {
 		int[] structure = { 16, 6, 4 };
-		net = new Network(structure, 0.3, 0.0000000001, 100, 7000);
+		net = new Network(structure, 0.3, 0.00000000001, 100, 7000);
 
 	}
 

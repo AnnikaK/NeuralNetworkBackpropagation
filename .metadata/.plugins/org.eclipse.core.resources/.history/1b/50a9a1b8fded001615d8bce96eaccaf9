@@ -208,8 +208,8 @@ public class Window extends Application {
 	}
 
 	private void setupNetwork() {
-		int[] structure = { 16, 6, 4 };
-		net = new Network(structure, 0.3, 0.0000000001, 100, 7000);
+		int[] structure = { 16, 8, 4 };
+		net = new Network(structure, 0.1, 0.1, 2000, 2000);
 
 	}
 
