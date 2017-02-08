@@ -30,6 +30,9 @@ public class Window extends Application {
 	private ComboBox<Integer> b4;
 	private Label react;
 	private ArrayList<ComboBox<Integer>> comboBoxes;
+	private Button abort;
+	private LearningThread learningThread;
+	private Label anzahl;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -43,7 +46,7 @@ public class Window extends Application {
 
 		Pane root = new Pane();
 		createWindow(root);
-		Scene scene = new Scene(root,800,420);
+		Scene scene = new Scene(root, 820, 420);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Neuronales Netzwerk");
 		primaryStage.show();
@@ -57,23 +60,20 @@ public class Window extends Application {
 	private void createWindow(Pane root) {
 
 		// labels on top
-		
+
 		VBox top = new VBox();
 		HBox bar = new HBox();
-		bar.setSpacing(50);
+		bar.setSpacing(60);
 		top.setSpacing(20);
 		top.setPadding(new Insets(20));
-		
-		
+
 		HBox leftStatus = new HBox();
 		leftStatus.setSpacing(20);
 		Label status = new Label("Status: ");
 		status.setFont(new Font(16));
 		statusContent = new Label("untrainiert");
 		statusContent.setFont(new Font(16));
-		leftStatus.getChildren().addAll(status,statusContent);
-
-
+		leftStatus.getChildren().addAll(status, statusContent);
 
 		HBox rightStatus = new HBox();
 		rightStatus.setSpacing(20);
@@ -81,26 +81,43 @@ public class Window extends Application {
 		err.setFont(new Font(16));
 		networkError = new Label("noch keine Daten vorhanden.");
 		networkError.setFont(new Font(16));
-		rightStatus.getChildren().addAll(err,networkError);
+		rightStatus.getChildren().addAll(err, networkError);
 
-		
-		bar.getChildren().addAll(leftStatus, rightStatus);
+		HBox iterations = new HBox();
+		iterations.setSpacing(20);
+		Label it = new Label("Anzahl Epochen: ");
+		it.setFont(new Font(16));
+		anzahl = new Label("0");
+		anzahl.setFont(new Font(16));
+		iterations.getChildren().addAll(it, anzahl);
+
+
+		bar.getChildren().addAll(leftStatus, rightStatus,iterations);
 		top.getChildren().add(bar);
+		
+		HBox buttons = new HBox();
+		buttons.setSpacing(20);
 
 		train = new Button("Netzwerk trainieren");
 		train.setFont(new Font(16));
-		train.setLayoutX(20);
-		train.setLayoutY(60);
 		train.setOnAction((e) -> createLearningThread());
-		top.getChildren().add(train);
+
+		abort = new Button("Abbruch");
+		abort.setFont(new Font(16));
+		abort.setOnAction((e) -> stopLearningThread());
+		abort.setDisable(true);
 		
+		buttons.getChildren().addAll(train,abort);
+
+		top.getChildren().add(buttons);
+
 		root.getChildren().add(top);
-		
+
 		VBox center = new VBox();
 		center.setSpacing(20);
 
 		createComboBoxes(center);
-		
+
 		run = new Button("Netzwerkdurchlauf starten!");
 		run.setFont(new Font(16));
 		run.setDisable(true);
@@ -110,9 +127,8 @@ public class Window extends Application {
 		center.setLayoutX(20);
 		center.setLayoutY(120);
 		root.getChildren().add(center);
-		
+
 		VBox reactionField = new VBox();
-		
 
 		Label reaction = new Label("Aktion: ");
 		reaction.setFont(new Font(16));
@@ -127,21 +143,32 @@ public class Window extends Application {
 
 	}
 
+	private void stopLearningThread() {
+		if (learningThread != null) {
+			learningThread.setAborted(true);
+			learningThread.interrupt();
+			learningThread = null;
+			statusContent.setText("abgebrochen");
+			train.setDisable(false);
+			setupNetwork(); //reset
+			
+		}
+
+	}
+
 	private void createComboBoxes(Pane center) {
-		
+
 		HBox field = new HBox();
-		
+
 		VBox vboxLeft = new VBox();
 		VBox vboxRight = new VBox();
-		
-		
+
 		vboxLeft.setSpacing(20);
 		vboxRight.setSpacing(20);
-		
+
 		vboxLeft.setPadding(new Insets(20));
 		vboxRight.setPadding(new Insets(20));
-		
-		
+
 		comboBoxes = new ArrayList<>();
 		ArrayList<Integer> numbers = new ArrayList<>();
 		for (int i = 0; i <= 10; i++) {
@@ -156,7 +183,6 @@ public class Window extends Application {
 		b1.setValue(0);
 		b1.getItems().addAll(numbers);
 		b1.setDisable(true);
-		
 
 		Label l2 = new Label("Munition: ");
 		l2.setFont(new Font(16));
@@ -184,9 +210,8 @@ public class Window extends Application {
 		b4.setValue(0);
 		b4.getItems().addAll(numbers);
 		b4.setDisable(true);
-	
 
-		vboxLeft.getChildren().addAll(l1,l2,l3,l4);
+		vboxLeft.getChildren().addAll(l1, l2, l3, l4);
 		vboxRight.getChildren().addAll(comboBoxes);
 		field.getChildren().addAll(vboxLeft, vboxRight);
 		center.getChildren().addAll(field);
@@ -195,7 +220,7 @@ public class Window extends Application {
 
 	private void setupNetwork() {
 		int[] structure = { 16, 8, 4 };
-		net = new Network(structure, 0.1, 0.1, 1000,7000);
+		net = new Network(structure, 0.1, 0.1, 1000, 7000);
 
 	}
 
@@ -207,7 +232,8 @@ public class Window extends Application {
 
 	private void createLearningThread() {
 		train.setDisable(true);
-		new LearningThread(net, this, fighter);
+		abort.setDisable(false);
+		learningThread = new LearningThread(net, this, fighter);
 	}
 
 	public ArrayList<ComboBox<Integer>> getComboboxes() {
@@ -239,6 +265,14 @@ public class Window extends Application {
 
 	public void setStatus(String string) {
 		statusContent.setText(string);
+	}
+
+	public void disableAbortButton() {
+		abort.setDisable(true);
+	}
+
+	public void setNumberOfIterations(long nrOfIterations) {
+		anzahl.setText(Long.toString(nrOfIterations));
 	}
 
 }

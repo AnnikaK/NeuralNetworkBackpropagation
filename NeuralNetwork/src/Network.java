@@ -13,11 +13,15 @@ public class Network {
 	private double networkError;
 	private double learningRate;
 
+	private boolean abort;
+
 	private long minIterations;
 	private long nrOfIterations;
 	private long maxIterations;
 
 	public Network(int[] structure) {
+
+		abort = false;
 
 		// default values
 		minError = 0;
@@ -36,6 +40,9 @@ public class Network {
 	}
 
 	public Network(int[] structure, double learningRate, double minError, long minIterations, long maxIterations) {
+
+		abort = false;
+
 		this.minError = minError;
 		this.learningRate = learningRate;
 		this.minIterations = minIterations;
@@ -99,8 +106,6 @@ public class Network {
 		for (Pattern p : patterns) {
 			int[] net_input = p.getX();
 
-			printInput(net_input);
-
 			// init input layer
 			ArrayList<Neuron> inputLayer = getInputLayer();
 			for (int i = 0; i < net_input.length; i++) {
@@ -116,7 +121,6 @@ public class Network {
 					n.activationFunction();
 				}
 			}
-			printResult();
 
 		}
 
@@ -152,10 +156,11 @@ public class Network {
 
 	public void backpropagation_learning(ArrayList<Pattern> examples, Window window) {
 
-		while (!stop_criteria()) {
+		while (!stop_criteria() && !Thread.currentThread().isInterrupted()) {
 			nrOfIterations++;
 
-			for (Pattern pattern : examples) {
+			for (int e = 0; e < examples.size() && !Thread.currentThread().isInterrupted(); e++) {
+				Pattern pattern = examples.get(e);
 				int[] target = pattern.getY();
 				if (target.length != outputLayerSize) {
 					throw new IllegalArgumentException("Pattern does not match network output!");
@@ -165,7 +170,7 @@ public class Network {
 					throw new IllegalArgumentException("Pattern does not match network input!");
 				}
 
-				//printInput(net_input);
+				// printInput(net_input);
 
 				// init input layer
 				ArrayList<Neuron> inputLayer = getInputLayer();
@@ -190,7 +195,7 @@ public class Network {
 					double error = n.activationFunctionDerivate() * (target[i] - n.getActivation());
 
 					n.setError(error);
-					errors[i] = error;
+					errors[i] = (target[i] - n.getActivation());
 
 					// update weights
 					for (Connection con : n.getInputConnections()) {
@@ -232,9 +237,14 @@ public class Network {
 
 				// printResult();
 			}
-			Platform.runLater(() -> window.setErrorLabel(networkError));
+			if(nrOfIterations % 4 == 0)
+			{
+				Platform.runLater(() -> window.setErrorLabel(networkError));
+				Platform.runLater(() -> window.setNumberOfIterations(nrOfIterations));
+			}
 
 		}
+		
 
 	}
 
@@ -269,7 +279,7 @@ public class Network {
 			total += Math.pow(errors[i], 2);
 		}
 		networkError = 0.5 * total;
-		return networkError < minError;
+		return networkError <= minError;
 
 	}
 
@@ -318,5 +328,7 @@ public class Network {
 		}
 		System.out.println();
 	}
+
+
 
 }

@@ -7,8 +7,10 @@ public class LearningThread extends Thread {
 	private Network net;
 	private Window window;
 	private Fighter fighter;
+	private boolean aborted;
 
 	public LearningThread(Network net, Window window, Fighter fighter) {
+		this.aborted = false;
 		this.net = net;
 		this.window = window;
 		this.fighter = fighter;
@@ -25,9 +27,19 @@ public class LearningThread extends Thread {
 		Platform.runLater(() -> window.setStatus("Trainiere"));
 
 		net.backpropagation_learning(trainingSet, window);
+		
+		Platform.runLater(() -> window.disableAbortButton());
 
-		Platform.runLater(() -> window.setStatus("trainiert"));
-		Platform.runLater(() -> window.enableUserInterface());
+		if (!aborted) {
+
+			Platform.runLater(() -> window.setStatus("trainiert"));
+			Platform.runLater(() -> window.enableUserInterface());
+		}
+
+	}
+
+	public void setAborted(boolean b) {
+		aborted = b;
 
 	}
 
