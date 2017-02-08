@@ -43,7 +43,7 @@ public class Window extends Application {
 
 		Pane root = new Pane();
 		createWindow(root);
-		Scene scene = new Scene(root,800,420);
+		Scene scene = new Scene(root, 800, 600);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Neuronales Netzwerk");
 		primaryStage.show();
@@ -97,33 +97,31 @@ public class Window extends Application {
 		root.getChildren().add(top);
 		
 		VBox center = new VBox();
-		center.setSpacing(20);
+		
 
 		createComboBoxes(center);
 		
+		
+
 		run = new Button("Netzwerkdurchlauf starten!");
 		run.setFont(new Font(16));
 		run.setDisable(true);
 		run.setOnAction((e) -> createRunningThread());
+		run.setLayoutX(20);
+		run.setLayoutY(320);
 		root.getChildren().add(run);
+		
 		center.getChildren().add(run);
-		center.setLayoutX(20);
-		center.setLayoutY(120);
-		root.getChildren().add(center);
-		
-		VBox reactionField = new VBox();
-		
 
 		Label reaction = new Label("Aktion: ");
 		reaction.setFont(new Font(16));
-
+		reaction.setLayoutX(360);
+		reaction.setLayoutY(140);
 		react = new Label("Nichtstun");
-		react.setFont(new Font(26));
-
-		reactionField.getChildren().addAll(reaction, react);
-		reactionField.setLayoutX(500);
-		reactionField.setLayoutY(140);
-		root.getChildren().add(reactionField);
+		react.setFont(new Font(16));
+		react.setLayoutX(360);
+		react.setLayoutY(180);
+		root.getChildren().addAll(reaction, react);
 
 	}
 
@@ -185,10 +183,14 @@ public class Window extends Application {
 		b4.getItems().addAll(numbers);
 		b4.setDisable(true);
 	
-
+		
+		
 		vboxLeft.getChildren().addAll(l1,l2,l3,l4);
 		vboxRight.getChildren().addAll(comboBoxes);
+		
 		field.getChildren().addAll(vboxLeft, vboxRight);
+		
+
 		center.getChildren().addAll(field);
 
 	}

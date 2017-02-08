@@ -43,7 +43,7 @@ public class Window extends Application {
 
 		Pane root = new Pane();
 		createWindow(root);
-		Scene scene = new Scene(root,800,420);
+		Scene scene = new Scene(root, 800, 600);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Neuronales Netzwerk");
 		primaryStage.show();
@@ -97,12 +97,12 @@ public class Window extends Application {
 		root.getChildren().add(top);
 		
 		VBox center = new VBox();
-		center.setSpacing(20);
+		
 
 		createComboBoxes(center);
 		
 		run = new Button("Netzwerkdurchlauf starten!");
-		run.setFont(new Font(16));
+		run.setFont(new Font(22));
 		run.setDisable(true);
 		run.setOnAction((e) -> createRunningThread());
 		root.getChildren().add(run);
@@ -118,7 +118,7 @@ public class Window extends Application {
 		reaction.setFont(new Font(16));
 
 		react = new Label("Nichtstun");
-		react.setFont(new Font(26));
+		react.setFont(new Font(16));
 
 		reactionField.getChildren().addAll(reaction, react);
 		reactionField.setLayoutX(500);

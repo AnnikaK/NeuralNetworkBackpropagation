@@ -43,7 +43,7 @@ public class Window extends Application {
 
 		Pane root = new Pane();
 		createWindow(root);
-		Scene scene = new Scene(root,800,420);
+		Scene scene = new Scene(root, 800, 600);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Neuronales Netzwerk");
 		primaryStage.show();
@@ -95,41 +95,30 @@ public class Window extends Application {
 		top.getChildren().add(train);
 		
 		root.getChildren().add(top);
-		
-		VBox center = new VBox();
-		center.setSpacing(20);
 
-		createComboBoxes(center);
-		
+		createComboBoxes(root);
+
 		run = new Button("Netzwerkdurchlauf starten!");
 		run.setFont(new Font(16));
 		run.setDisable(true);
 		run.setOnAction((e) -> createRunningThread());
+		run.setLayoutX(20);
+		run.setLayoutY(320);
 		root.getChildren().add(run);
-		center.getChildren().add(run);
-		center.setLayoutX(20);
-		center.setLayoutY(120);
-		root.getChildren().add(center);
-		
-		VBox reactionField = new VBox();
-		
 
 		Label reaction = new Label("Aktion: ");
 		reaction.setFont(new Font(16));
-
+		reaction.setLayoutX(360);
+		reaction.setLayoutY(140);
 		react = new Label("Nichtstun");
-		react.setFont(new Font(26));
-
-		reactionField.getChildren().addAll(reaction, react);
-		reactionField.setLayoutX(500);
-		reactionField.setLayoutY(140);
-		root.getChildren().add(reactionField);
+		react.setFont(new Font(16));
+		react.setLayoutX(360);
+		react.setLayoutY(180);
+		root.getChildren().addAll(reaction, react);
 
 	}
 
-	private void createComboBoxes(Pane center) {
-		
-		HBox field = new HBox();
+	private void createComboBoxes(Pane root) {
 		
 		VBox vboxLeft = new VBox();
 		VBox vboxRight = new VBox();
@@ -141,6 +130,11 @@ public class Window extends Application {
 		vboxLeft.setPadding(new Insets(20));
 		vboxRight.setPadding(new Insets(20));
 		
+		vboxLeft.setLayoutX(20);
+		vboxLeft.setLayoutY(400);
+		
+		vboxRight.setLayoutX(300);
+		vboxRight.setLayoutY(400);
 		
 		comboBoxes = new ArrayList<>();
 		ArrayList<Integer> numbers = new ArrayList<>();
@@ -155,6 +149,12 @@ public class Window extends Application {
 		b1.setPromptText("0");
 		b1.setValue(0);
 		b1.getItems().addAll(numbers);
+		/*
+		l1.setLayoutX(20);
+		l1.setLayoutY(140);
+		b1.setLayoutX(180);
+		b1.setLayoutY(140);
+		*/
 		b1.setDisable(true);
 		
 
@@ -165,6 +165,12 @@ public class Window extends Application {
 		b2.setPromptText("0");
 		b2.setValue(0);
 		b2.getItems().addAll(numbers);
+		/*
+		l2.setLayoutX(20);
+		l2.setLayoutY(180);
+		b2.setLayoutX(180);
+		b2.setLayoutY(180);
+		*/
 		b2.setDisable(true);
 
 		Label l3 = new Label("Anzahl Gegner: ");
@@ -174,6 +180,12 @@ public class Window extends Application {
 		b3.setPromptText("0");
 		b3.setValue(0);
 		b3.getItems().addAll(numbers);
+		/*
+		l3.setLayoutX(20);
+		l3.setLayoutY(220);
+		b3.setLayoutX(180);
+		b3.setLayoutY(220);
+		*/
 		b3.setDisable(true);
 
 		Label l4 = new Label("Anzahl Verbündete: ");
@@ -183,13 +195,20 @@ public class Window extends Application {
 		b4.setPromptText("0");
 		b4.setValue(0);
 		b4.getItems().addAll(numbers);
+		/*
+		l4.setLayoutX(20);
+		l4.setLayoutY(260);
+		b4.setLayoutX(180);
+		b4.setLayoutY(260);
+		*/
 		b4.setDisable(true);
-	
-
+		
+		
 		vboxLeft.getChildren().addAll(l1,l2,l3,l4);
 		vboxRight.getChildren().addAll(comboBoxes);
-		field.getChildren().addAll(vboxLeft, vboxRight);
-		center.getChildren().addAll(field);
+		
+
+		root.getChildren().addAll(vboxLeft,vboxRight);
 
 	}
 

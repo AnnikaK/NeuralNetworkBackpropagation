@@ -43,7 +43,7 @@ public class Window extends Application {
 
 		Pane root = new Pane();
 		createWindow(root);
-		Scene scene = new Scene(root,800,420);
+		Scene scene = new Scene(root,800,450);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Neuronales Netzwerk");
 		primaryStage.show();
