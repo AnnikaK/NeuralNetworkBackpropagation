@@ -34,6 +34,7 @@ public class Window extends Application {
 	private LearningThread learningThread;
 	private Label anzahl;
 	private Button check;
+	private Label succesRate;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -47,7 +48,7 @@ public class Window extends Application {
 
 		Pane root = new Pane();
 		createWindow(root);
-		Scene scene = new Scene(root, 820, 420);
+		Scene scene = new Scene(root, 820, 500);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Neuronales Netzwerk");
 		primaryStage.show();
@@ -110,18 +111,27 @@ public class Window extends Application {
 		abort.setFont(new Font(16));
 		abort.setOnAction((e) -> stopLearningThread());
 		abort.setDisable(true);
+		
+	
+		Label success = new Label("Erfolgsrate: ");
+		success.setFont(new Font(16));
+		succesRate = new Label("?");
+		succesRate.setFont(new Font(16));
+		
 
-		check = new Button("Auf Korrektheit prüfen");
+		check = new Button("Erfolgsrate ermitteln");
 		check.setFont(new Font(16));
 		check.setDisable(true);
 		check.setOnAction((e) -> createCheckThread());
+		
+	
 
-		buttons.getChildren().addAll(train, abort, check);
+		buttons.getChildren().addAll(train, abort,check,success,succesRate);
 
 		top.getChildren().add(buttons);
 
 		root.getChildren().add(top);
-
+		
 		VBox center = new VBox();
 		center.setSpacing(20);
 
@@ -134,7 +144,7 @@ public class Window extends Application {
 
 		center.getChildren().add(run);
 		center.setLayoutX(20);
-		center.setLayoutY(120);
+		center.setLayoutY(180);
 		root.getChildren().add(center);
 
 		VBox reactionField = new VBox();
@@ -146,8 +156,8 @@ public class Window extends Application {
 		react.setFont(new Font(26));
 
 		reactionField.getChildren().addAll(reaction, react);
-		reactionField.setLayoutX(500);
-		reactionField.setLayoutY(140);
+		reactionField.setLayoutX(400);
+		reactionField.setLayoutY(200);
 		root.getChildren().add(reactionField);
 
 	}
@@ -249,7 +259,7 @@ public class Window extends Application {
 	
 	// TODO
 	private void createCheckThread() {
-		new CheckThread(fighter);
+		new CheckThread(fighter,this);
 	}
 
 	public ArrayList<ComboBox<Integer>> getComboboxes() {
@@ -293,6 +303,10 @@ public class Window extends Application {
 
 	public void setNumberOfIterations(long nrOfIterations) {
 		anzahl.setText(Long.toString(nrOfIterations));
+	}
+
+	public void setErfolgsrate(String string) {
+		succesRate.setText(string);
 	}
 
 }

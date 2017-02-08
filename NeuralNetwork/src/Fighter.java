@@ -177,19 +177,23 @@ public class Fighter {
 
 	public int[] calculateExpectedOutput(int health, int ammo, int nrEnemies, int nrFriends) {
 		int[] y = new int[] { 0, 0, 0, 0 };
+		/*
+		 * if (health < 3 && nrFriends > 0) { y[heilung] = 1; } else if (health
+		 * < 3 && nrFriends == 0) { y[verstecken] = 1; } else if (ammo < 3 &&
+		 * !ueberzahl(nrEnemies, nrFriends)) { y[sammeln] = 1; } else if (ammo <
+		 * 3 && ueberzahl(nrEnemies, nrFriends)) { y[verstecken] = 1; } else if
+		 * (!ueberzahl(nrEnemies, nrFriends)) { y[angriff] = 1; } else {
+		 * y[verstecken] = 1; }
+		 */
 
 		if (health < 3 && nrFriends > 0) {
 			y[heilung] = 1;
-		} else if (health < 3 && nrFriends == 0) {
+		} else if (ueberzahl(nrEnemies, nrFriends)) {
 			y[verstecken] = 1;
-		} else if (ammo < 3 && !ueberzahl(nrEnemies, nrFriends)) {
+		} else if (ammo < 3) {
 			y[sammeln] = 1;
-		} else if (ammo < 3 && ueberzahl(nrEnemies, nrFriends)) {
-			y[verstecken] = 1;
-		} else if (!ueberzahl(nrEnemies, nrFriends)) {
+		} else if (nrEnemies != 0) {
 			y[angriff] = 1;
-		} else {
-			y[verstecken] = 1;
 		}
 
 		return y;

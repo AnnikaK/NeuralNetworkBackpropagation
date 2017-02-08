@@ -1,10 +1,13 @@
+import javafx.application.Platform;
 
 public class CheckThread extends Thread {
 
 	private Fighter fighter;
+	private Window window;
 
-	public CheckThread(Fighter fighter) {
+	public CheckThread(Fighter fighter, Window window) {
 		this.fighter = fighter;
+		this.window = window;
 		setDaemon(true);
 		start();
 	}
@@ -18,9 +21,10 @@ public class CheckThread extends Thread {
 		
 		double percent =  100 - (((double) falses/total)*100);
 		
+		Platform.runLater(()-> window.setCheckDisable(true));
 		
-		
-		System.out.println("Erfolgsrate: " + percent + "%");
+		Platform.runLater(()->window.setErfolgsrate(Math.round(percent) + "%"));
+
 	}
 
 }

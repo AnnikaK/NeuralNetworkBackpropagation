@@ -1,0 +1,307 @@
+
+import java.util.ArrayList;
+
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
+public class Window extends Application {
+
+	private Network net;
+	private Fighter fighter;
+	private Label statusContent;
+	private Label networkError;
+
+	private Button train;
+	private Button run;
+
+	private ComboBox<Integer> b1;
+	private ComboBox<Integer> b2;
+	private ComboBox<Integer> b3;
+	private ComboBox<Integer> b4;
+	private Label react;
+	private ArrayList<ComboBox<Integer>> comboBoxes;
+	private Button abort;
+	private LearningThread learningThread;
+	private Label anzahl;
+	private Button check;
+	private Label successRate;
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+
+		setupNetwork();
+		fighter = new Fighter(net);
+
+		Pane root = new Pane();
+		createWindow(root);
+		Scene scene = new Scene(root, 820, 420);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("Neuronales Netzwerk");
+		primaryStage.show();
+
+		// net.backpropagation_learning(examples);
+
+	}
+
+	// ---------------------------User Interface
+
+	private void createWindow(Pane root) {
+
+		// labels on top
+
+		VBox top = new VBox();
+		HBox bar = new HBox();
+		bar.setSpacing(60);
+		top.setSpacing(20);
+		top.setPadding(new Insets(20));
+
+		HBox leftStatus = new HBox();
+		leftStatus.setSpacing(20);
+		Label status = new Label("Status: ");
+		status.setFont(new Font(16));
+		statusContent = new Label("untrainiert");
+		statusContent.setFont(new Font(16));
+		leftStatus.getChildren().addAll(status, statusContent);
+
+		HBox rightStatus = new HBox();
+		rightStatus.setSpacing(20);
+		Label err = new Label("Netzwerkfehler: ");
+		err.setFont(new Font(16));
+		networkError = new Label("noch keine Daten");
+		networkError.setFont(new Font(16));
+		rightStatus.getChildren().addAll(err, networkError);
+
+		bar.getChildren().addAll(leftStatus, rightStatus);
+		top.getChildren().add(bar);
+
+		HBox iterations = new HBox();
+		iterations.setSpacing(20);
+		Label it = new Label("Anzahl Epochen: ");
+		it.setFont(new Font(16));
+		anzahl = new Label("0");
+		anzahl.setFont(new Font(16));
+		iterations.getChildren().addAll(it, anzahl);
+
+		iterations.setLayoutX(570);
+		iterations.setLayoutY(20);
+		root.getChildren().add(iterations);
+
+		HBox buttons = new HBox();
+		buttons.setSpacing(20);
+
+		train = new Button("Netzwerk trainieren");
+		train.setFont(new Font(16));
+		train.setOnAction((e) -> createLearningThread());
+
+		abort = new Button("Abbruch");
+		abort.setFont(new Font(16));
+		abort.setOnAction((e) -> stopLearningThread());
+		abort.setDisable(true);
+
+		check = new Button("Auf Korrektheit prüfen");
+		check.setFont(new Font(16));
+		check.setDisable(true);
+		check.setOnAction((e) -> createCheckThread());
+
+		Label success = new Label("Erfolgsrate: ");
+		success.setFont(new Font(16));
+		successRate = new Label("?");
+		successRate.setFont(new Font(16));
+
+		buttons.getChildren().addAll(train, abort, check, success, successRate);
+
+		top.getChildren().add(buttons);
+
+		root.getChildren().add(top);
+
+		VBox center = new VBox();
+		center.setSpacing(20);
+
+		createComboBoxes(center);
+
+		run = new Button("Netzwerkdurchlauf starten!");
+		run.setFont(new Font(16));
+		run.setDisable(true);
+		run.setOnAction((e) -> createRunningThread());
+
+		center.getChildren().add(run);
+		center.setLayoutX(20);
+		center.setLayoutY(120);
+		root.getChildren().add(center);
+
+		VBox reactionField = new VBox();
+
+		Label reaction = new Label("Aktion: ");
+		reaction.setFont(new Font(16));
+
+		react = new Label("Nichtstun");
+		react.setFont(new Font(26));
+
+		reactionField.getChildren().addAll(reaction, react);
+		reactionField.setLayoutX(500);
+		reactionField.setLayoutY(140);
+		root.getChildren().add(reactionField);
+
+	}
+
+	private void createComboBoxes(Pane center) {
+
+		HBox field = new HBox();
+
+		VBox vboxLeft = new VBox();
+		VBox vboxRight = new VBox();
+
+		vboxLeft.setSpacing(20);
+		vboxRight.setSpacing(20);
+
+		vboxLeft.setPadding(new Insets(20));
+		vboxRight.setPadding(new Insets(20));
+
+		comboBoxes = new ArrayList<>();
+		ArrayList<Integer> numbers = new ArrayList<>();
+		for (int i = 0; i <= 10; i++) {
+			numbers.add(i);
+		}
+
+		Label l1 = new Label("Gesundheit: ");
+		l1.setFont(new Font(16));
+		b1 = new ComboBox<>();
+		comboBoxes.add(b1);
+		b1.setPromptText("0");
+		b1.setValue(0);
+		b1.getItems().addAll(numbers);
+		b1.setDisable(true);
+
+		Label l2 = new Label("Munition: ");
+		l2.setFont(new Font(16));
+		b2 = new ComboBox<>();
+		comboBoxes.add(b2);
+		b2.setPromptText("0");
+		b2.setValue(0);
+		b2.getItems().addAll(numbers);
+		b2.setDisable(true);
+
+		Label l3 = new Label("Anzahl Gegner: ");
+		l3.setFont(new Font(16));
+		b3 = new ComboBox<>();
+		comboBoxes.add(b3);
+		b3.setPromptText("0");
+		b3.setValue(0);
+		b3.getItems().addAll(numbers);
+		b3.setDisable(true);
+
+		Label l4 = new Label("Anzahl Verbündete: ");
+		l4.setFont(new Font(16));
+		b4 = new ComboBox<>();
+		comboBoxes.add(b4);
+		b4.setPromptText("0");
+		b4.setValue(0);
+		b4.getItems().addAll(numbers);
+		b4.setDisable(true);
+
+		vboxLeft.getChildren().addAll(l1, l2, l3, l4);
+		vboxRight.getChildren().addAll(comboBoxes);
+		field.getChildren().addAll(vboxLeft, vboxRight);
+		center.getChildren().addAll(field);
+
+	}
+
+	private void setupNetwork() {
+		int[] structure = { 16, 8, 4 };
+		net = new Network(structure, 0.3, 0.0000000001, 100, 7000);
+
+	}
+
+	private void createRunningThread() {
+		run.setDisable(true);
+		new RunNetworkThread(net, this, fighter);
+
+	}
+
+	private void createLearningThread() {
+		train.setDisable(true);
+		abort.setDisable(false);
+		enableDisableUserInterface(true);
+		learningThread = new LearningThread(net, this, fighter);
+	}
+
+	private void stopLearningThread() {
+		if (learningThread != null) {
+			learningThread.setAborted(true);
+			learningThread.interrupt();
+			learningThread = null;
+			statusContent.setText("abgebrochen");
+			train.setDisable(false);
+			setupNetwork(); // reset
+
+		}
+
+	}
+
+	// TODO
+	private void createCheckThread() {
+		new CheckThread(fighter,this);
+	}
+
+	public ArrayList<ComboBox<Integer>> getComboboxes() {
+		return comboBoxes;
+	}
+
+	public void enableRunningButton() {
+		run.setDisable(false);
+	}
+
+	public void enableTrainingButton() {
+		train.setDisable(false);
+	}
+
+	public void enableDisableUserInterface(boolean b) {
+		for (ComboBox<Integer> box : comboBoxes) {
+			box.setDisable(b);
+		}
+		run.setDisable(b);
+	}
+
+	public void setCheckDisable(boolean b) {
+		check.setDisable(b);
+	}
+
+	public void setErrorLabel(double val) {
+		networkError.setText(Double.toString(val));
+	}
+
+	public void react(String s) {
+		react.setText(s);
+	}
+
+	public void setStatus(String string) {
+		statusContent.setText(string);
+	}
+
+	public void disableAbortButton() {
+		abort.setDisable(true);
+	}
+
+	public void setNumberOfIterations(long nrOfIterations) {
+		anzahl.setText(Long.toString(nrOfIterations));
+	}
+
+	public void setSuccessRate(String string) {
+		successRate.setText(string);
+	}
+
+}
