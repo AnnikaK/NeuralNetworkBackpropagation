@@ -14,6 +14,7 @@ public class Fighter {
 	private final int heilung = 3;
 	private Network net;
 	private ArrayList<Pattern> totalSet;
+	private ArrayList<Pattern> trainingSet;
 
 	public Fighter(Network net) {
 
@@ -38,7 +39,7 @@ public class Fighter {
 		} else if (equal(outputVector, collectAmmo)) {
 			return "Munition sammeln";
 		} else if (equal(outputVector, getHealing)) {
-			return "Heilung von Verbündeten erhalten";
+			return "Heilung von Verbündetem erhalten";
 		} else {
 			return "Untentschlossen";
 		}
@@ -50,7 +51,7 @@ public class Fighter {
 			return false;
 		}
 		for (int i = 0; i < a.length; i++) {
-			if (Math.abs(a[i] - b[i]) > 0.1) { // toleranzbereich weil exakt 1
+			if (Math.abs(a[i] - b[i]) > 0.01) { // toleranzbereich weil exakt 1
 												// bzw.
 												// 0 nie erreicht
 				return false;
@@ -60,7 +61,10 @@ public class Fighter {
 	}
 
 	public ArrayList<Pattern> generateTrainingSamples() {
-		ArrayList<Pattern> trainingSet = new ArrayList<>();
+		totalSet = new ArrayList<>();
+		trainingSet = new ArrayList<>();
+
+		int counter = 1;
 
 		for (int a = 0; a < 11; a++) {
 			for (int b = 0; b < 11; b++) {
@@ -77,42 +81,13 @@ public class Fighter {
 						int[] y = calculateExpectedOutput(a, b, c, d);
 
 						Pattern sample = new Pattern(x, y);
-						trainingSet.add(sample);
+						totalSet.add(sample);
+						if (counter % 1000 != 0) {
 
-					}
-
-				}
-			}
-		}
-		totalSet = trainingSet;
-		return trainingSet;
-	}
-
-	public ArrayList<Pattern> generateIncompleteTrainingSamples() {
-		ArrayList<Pattern> trainingSet = new ArrayList<>();
-
-		int counter = 0;
-
-		for (int a = 0; a < 11; a++) {
-			for (int b = 0; b < 11; b++) {
-				for (int c = 0; c < 11; c++) {
-					for (int d = 0; d < 11; d++) {
-
-						ArrayList<String> strings = new ArrayList<>();
-						strings.add(Integer.toBinaryString(a));
-						strings.add(Integer.toBinaryString(b));
-						strings.add(Integer.toBinaryString(c));
-						strings.add(Integer.toBinaryString(d));
-
-						int[] x = createInputVector(strings);
-						int[] y = calculateExpectedOutput(a, b, c, d);
-
-						Pattern sample = new Pattern(x, y);
-
-						if (!(counter % 100 == 0)) {
-
-							trainingSet.add(sample);
+							trainingSet.add(sample); // don't use all for
+														// training
 						}
+
 						counter++;
 
 					}
@@ -120,6 +95,7 @@ public class Fighter {
 				}
 			}
 		}
+		;
 		return trainingSet;
 	}
 
@@ -139,7 +115,7 @@ public class Fighter {
 			return false;
 		}
 		for (int i = 0; i < a.length; i++) {
-			if (Math.abs(a[i] - b[i]) > 0.1) { // toleranzbereich weil exakt 1
+			if (Math.abs(a[i] - b[i]) > 0.01) { // toleranzbereich weil exakt 1
 												// bzw.
 												// 0 nie erreicht
 				return false;
@@ -177,20 +153,14 @@ public class Fighter {
 
 	public int[] calculateExpectedOutput(int health, int ammo, int nrEnemies, int nrFriends) {
 		int[] y = new int[] { 0, 0, 0, 0 };
-		/*
-		 * if (health < 3 && nrFriends > 0) { y[heilung] = 1; } else if (health
-		 * < 3 && nrFriends == 0) { y[verstecken] = 1; } else if (ammo < 3 &&
-		 * !ueberzahl(nrEnemies, nrFriends)) { y[sammeln] = 1; } else if (ammo <
-		 * 3 && ueberzahl(nrEnemies, nrFriends)) { y[verstecken] = 1; } else if
-		 * (!ueberzahl(nrEnemies, nrFriends)) { y[angriff] = 1; } else {
-		 * y[verstecken] = 1; }
-		 */
 
-		if (health < 3 && nrFriends > 0) {
+		if (health == 0) {
+
+		} else if (health < 3 && nrFriends > 0) {
 			y[heilung] = 1;
-		} else if (ueberzahl(nrEnemies, nrFriends)) {
+		} else if (health < 3 || ueberzahl(nrEnemies, nrFriends)) {
 			y[verstecken] = 1;
-		} else if (ammo < 3) {
+		} else if (ammo == 0) {
 			y[sammeln] = 1;
 		} else if (nrEnemies != 0) {
 			y[angriff] = 1;
@@ -200,7 +170,7 @@ public class Fighter {
 	}
 
 	private boolean ueberzahl(int nrEnemies, int nrFriends) {
-		return nrEnemies - nrFriends >= 3;
+		return nrEnemies - nrFriends > 3;
 	}
 
 	public int getNrOfSamples() {

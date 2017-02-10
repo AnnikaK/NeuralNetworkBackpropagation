@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -106,6 +107,7 @@ public class Window extends Application {
 		train = new Button("Netzwerk trainieren");
 		train.setFont(new Font(16));
 		train.setOnAction((e) -> createLearningThread());
+		
 
 		abort = new Button("Abbruch");
 		abort.setFont(new Font(16));
@@ -227,8 +229,8 @@ public class Window extends Application {
 	}
 
 	private void setupNetwork() {
-		int[] structure = { 16, 6, 4 };
-		net = new Network(structure, 0.3, 0.0000000001, 100, 7000);
+		int[] structure = { 16, 13,4 };
+		net = new Network(structure, 0.3, 0.000001, 1000, 5000);
 
 	}
 
@@ -257,7 +259,7 @@ public class Window extends Application {
 
 	}
 	
-	// TODO
+
 	private void createCheckThread() {
 		new CheckThread(fighter,this);
 	}

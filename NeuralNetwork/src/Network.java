@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javafx.application.Platform;
 
@@ -13,16 +14,15 @@ public class Network {
 	private double networkError;
 	private double learningRate;
 
-	private boolean abort;
-
 	private long minIterations;
 	private long nrOfIterations;
 	private long maxIterations;
+	private double momentum;
 
 	public Network(int[] structure) {
 
-		abort = false;
 
+		momentum = 0.7;
 		// default values
 		minError = 0;
 		learningRate = 0.1;
@@ -40,8 +40,8 @@ public class Network {
 	}
 
 	public Network(int[] structure, double learningRate, double minError, long minIterations, long maxIterations) {
-
-		abort = false;
+		
+		momentum = 0.7;
 
 		this.minError = minError;
 		this.learningRate = learningRate;
@@ -130,8 +130,6 @@ public class Network {
 
 		int[] net_input = p.getX();
 
-		// printInput(net_input);
-
 		// init input layer
 		ArrayList<Neuron> inputLayer = getInputLayer();
 		for (int i = 0; i < net_input.length; i++) {
@@ -151,6 +149,8 @@ public class Network {
 		for (int i = 0; i < outputLayerSize; i++) {
 			outputVector[i] = getOutputLayer().get(i).getActivation();
 		}
+		
+		
 		return outputVector;
 	}
 
@@ -200,8 +200,12 @@ public class Network {
 					// update weights
 					for (Connection con : n.getInputConnections()) {
 						Neuron left = con.getLeftNeuron();
+						
+						double previousDelta = con.getPreviousDelta();
+						
 						double delta = learningRate * left.getActivation() * n.getError();
-						con.setWeight(con.getWeight() + delta);
+						con.setWeight(con.getWeight() + delta + (momentum *previousDelta));
+						con.setPreviousDelta(delta);
 					}
 
 				}
@@ -227,8 +231,12 @@ public class Network {
 						ArrayList<Connection> inConn = n.getInputConnections();
 						for (Connection con : inConn) {
 							Neuron left = con.getLeftNeuron();
+							
+							double previousDelta = con.getPreviousDelta();
+							
 							double delta = learningRate * left.getActivation() * n.getError();
-							con.setWeight(con.getWeight() + delta);
+							con.setWeight(con.getWeight() + delta + (momentum *previousDelta));
+							con.setPreviousDelta(delta);
 						}
 
 					}
