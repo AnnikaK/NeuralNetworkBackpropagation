@@ -8,7 +8,6 @@
 <fullyQualifiedTypeName name="LearningThread"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="javafx.scene.control.ComboBox"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="Pattern"/>
 <fullyQualifiedTypeName name="javafx.scene.layout.VBox"/>
 <fullyQualifiedTypeName name="javafx.geometry.Insets"/>
@@ -18,4 +17,6 @@
 <fullyQualifiedTypeName name="javafx.scene.text.Font"/>
 <fullyQualifiedTypeName name="javafx.application.Platform"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.lang.StringBuffer"/>
 </qualifiedTypeNameHistroy>

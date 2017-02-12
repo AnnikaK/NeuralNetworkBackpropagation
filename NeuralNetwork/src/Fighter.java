@@ -170,7 +170,7 @@ public class Fighter {
 	}
 
 	private boolean ueberzahl(int nrEnemies, int nrFriends) {
-		return nrEnemies - nrFriends > 3;
+		return nrEnemies - (nrFriends + 1)> 3;
 	}
 
 	public int getNrOfSamples() {

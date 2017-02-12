@@ -22,6 +22,7 @@ public class LearningThread extends Thread {
 	public void run() {
 		
 		Platform.runLater(() -> window.setCheckDisable(true));
+		Platform.runLater(() -> window.setSaveDisable(true));
 
 		Platform.runLater(() -> window.setStatus("Generiere Trainingsset"));
 		ArrayList<Pattern> trainingSet = fighter.generateTrainingSamples();
@@ -37,6 +38,7 @@ public class LearningThread extends Thread {
 			Platform.runLater(() -> window.setStatus("trainiert"));
 			Platform.runLater(() -> window.enableUserInterface());
 			Platform.runLater(() -> window.setCheckDisable(false));
+			Platform.runLater(() -> window.setSaveDisable(false));
 			
 		}
 

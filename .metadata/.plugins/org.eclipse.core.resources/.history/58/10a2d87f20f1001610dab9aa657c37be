@@ -1,0 +1,36 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+public class WriteFileThread extends Thread {
+
+
+
+	private Network net;
+
+	public WriteFileThread(Network net) {
+		this.net = net;
+	}
+
+	@Override
+	public void run() {
+		
+		
+		//if not existing yet
+		File txt = new File("networkWeights.txt");
+		
+		 ArrayList<StringBuffer> weights = net.getWeights();
+		
+		
+		try {
+			FileWriter writer = new FileWriter(txt);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}

@@ -36,6 +36,7 @@ public class Window extends Application {
 	private Label anzahl;
 	private Button check;
 	private Label succesRate;
+	private Button save;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -126,11 +127,19 @@ public class Window extends Application {
 		check.setDisable(true);
 		check.setOnAction((e) -> createCheckThread());
 		
+		save = new Button("Speichern");
+		save.setFont(new Font(16));
+		//save.setLayoutX(650);
+		//save.setLayoutY(400);
+		save.setDisable(true);
+		save.setOnAction((e) -> createWriteFileThread());
+	
 	
 
-		buttons.getChildren().addAll(train, abort,check,success,succesRate);
+		buttons.getChildren().addAll(train, abort,check,success,succesRate, save);
 
 		top.getChildren().add(buttons);
+	
 
 		root.getChildren().add(top);
 		
@@ -143,6 +152,8 @@ public class Window extends Application {
 		run.setFont(new Font(16));
 		run.setDisable(true);
 		run.setOnAction((e) -> createRunningThread());
+		
+
 
 		center.getChildren().add(run);
 		center.setLayoutX(20);
@@ -161,9 +172,14 @@ public class Window extends Application {
 		reactionField.setLayoutX(400);
 		reactionField.setLayoutY(200);
 		root.getChildren().add(reactionField);
+		
+
+
+		
+		
+		
 
 	}
-
 
 
 	private void createComboBoxes(Pane center) {
@@ -230,7 +246,7 @@ public class Window extends Application {
 
 	private void setupNetwork() {
 		int[] structure = { 16, 13,4 };
-		net = new Network(structure, 0.3, 0.000001, 1000, 5000);
+		net = new Network(structure, 0.3, 0.0000001, 1000, 5000);
 
 	}
 
@@ -239,6 +255,13 @@ public class Window extends Application {
 		new RunNetworkThread(net, this, fighter);
 
 	}
+
+	private void createWriteFileThread() {
+		save.setDisable(true);
+		new WriteFileThread(net);
+	
+	}
+
 
 	private void createLearningThread() {
 		train.setDisable(true);
@@ -274,6 +297,11 @@ public class Window extends Application {
 
 	public void enableTrainingButton() {
 		train.setDisable(false);
+	}
+	
+	public void setSaveDisable(boolean b)
+	{
+		save.setDisable(b);
 	}
 
 	public void enableUserInterface() {

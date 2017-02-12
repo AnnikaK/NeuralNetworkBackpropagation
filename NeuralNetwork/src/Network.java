@@ -21,8 +21,7 @@ public class Network {
 
 	public Network(int[] structure) {
 
-
-		momentum = 0.7;
+		momentum = 0.5;
 		// default values
 		minError = 0;
 		learningRate = 0.1;
@@ -40,8 +39,8 @@ public class Network {
 	}
 
 	public Network(int[] structure, double learningRate, double minError, long minIterations, long maxIterations) {
-		
-		momentum = 0.7;
+
+		momentum = 0.5;
 
 		this.minError = minError;
 		this.learningRate = learningRate;
@@ -149,8 +148,7 @@ public class Network {
 		for (int i = 0; i < outputLayerSize; i++) {
 			outputVector[i] = getOutputLayer().get(i).getActivation();
 		}
-		
-		
+
 		return outputVector;
 	}
 
@@ -200,11 +198,11 @@ public class Network {
 					// update weights
 					for (Connection con : n.getInputConnections()) {
 						Neuron left = con.getLeftNeuron();
-						
+
 						double previousDelta = con.getPreviousDelta();
-						
+
 						double delta = learningRate * left.getActivation() * n.getError();
-						con.setWeight(con.getWeight() + delta + (momentum *previousDelta));
+						con.setWeight(con.getWeight() + delta + (momentum * previousDelta));
 						con.setPreviousDelta(delta);
 					}
 
@@ -231,11 +229,11 @@ public class Network {
 						ArrayList<Connection> inConn = n.getInputConnections();
 						for (Connection con : inConn) {
 							Neuron left = con.getLeftNeuron();
-							
+
 							double previousDelta = con.getPreviousDelta();
-							
+
 							double delta = learningRate * left.getActivation() * n.getError();
-							con.setWeight(con.getWeight() + delta + (momentum *previousDelta));
+							con.setWeight(con.getWeight() + delta + (momentum * previousDelta));
 							con.setPreviousDelta(delta);
 						}
 
@@ -245,14 +243,12 @@ public class Network {
 
 				// printResult();
 			}
-			if(nrOfIterations % 4 == 0)
-			{
+			if (nrOfIterations % 4 == 0) {
 				Platform.runLater(() -> window.setErrorLabel(networkError));
 				Platform.runLater(() -> window.setNumberOfIterations(nrOfIterations));
 			}
 
 		}
-		
 
 	}
 
@@ -337,6 +333,24 @@ public class Network {
 		System.out.println();
 	}
 
+	public ArrayList<StringBuffer> getWeights() {
+		ArrayList<StringBuffer> weights = new ArrayList<>();
+		for (int i = 1; i < nrOfLayers; i++) {
+			StringBuffer layerWeights = new StringBuffer();
+			ArrayList<Neuron> l = layers.get(i);
+			for (Neuron n : l) {
+				layerWeights.append("GEWICHTE FÜR NEURON " + n.getNrInLayer() + ":");
+				layerWeights.append(System.getProperty("line.separator"));
+				layerWeights.append(n.InputConnectionsToStringBuffer());
+				layerWeights.append(System.getProperty("line.separator"));
+				
+			}
+			
+			weights.add(layerWeights);
 
+		}
+		return weights;
+
+	}
 
 }

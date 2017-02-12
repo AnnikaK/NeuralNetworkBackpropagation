@@ -22,6 +22,7 @@ public class CheckThread extends Thread {
 		double percent =  100 - (((double) falses/total)*100);
 		
 		Platform.runLater(()-> window.setCheckDisable(true));
+		 
 		
 		Platform.runLater(()->window.setErfolgsrate(Math.round(percent) + "%"));
 
