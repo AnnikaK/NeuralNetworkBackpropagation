@@ -201,8 +201,8 @@ public class Network {
 
 						double previousDelta = con.getPreviousDelta();
 
-						double delta = learningRate * left.getActivation() * n.getError();
-						con.setWeight(con.getWeight() + delta + (momentum * previousDelta));
+						double delta = learningRate * left.getActivation() * n.getError() + (momentum * previousDelta);
+						con.setWeight(con.getWeight() + delta);
 						con.setPreviousDelta(delta);
 					}
 
@@ -232,8 +232,8 @@ public class Network {
 
 							double previousDelta = con.getPreviousDelta();
 
-							double delta = learningRate * left.getActivation() * n.getError();
-							con.setWeight(con.getWeight() + delta + (momentum * previousDelta));
+							double delta = learningRate * left.getActivation() * n.getError() + (momentum * previousDelta);
+							con.setWeight(con.getWeight() + delta);
 							con.setPreviousDelta(delta);
 						}
 
